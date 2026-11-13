@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RappiApp | Todo en minutos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- MÓDULO 1: HEADER & GEOLOCALIZACIÓN -->
+  <header class="header">
+    <div class="container header-content">
+      <div class="header-left">
+        <a href="#" class="logo" id="resetFilters">
+          <span class="logo-badge">R</span>
+          <span class="logo-text">Rappi<small>Clone</small></span>
+        </a>
+
+        <button class="location-btn" id="openLocationModal" type="button">
+          <span class="icon-pin">📍</span>
+          <div class="location-info">
+            <span class="location-label">Entregar en</span>
+            <strong id="currentAddress">Cra 43A # 1-50, El Poblado</strong>
+          </div>
+          <span class="chevron">▾</span>
+        </button>
+      </div>
+
+      <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Busca entre +110 productos, restaurantes, súper, farmacia..."
+          autocomplete="off"
+        />
+        <button type="button" id="clearSearch" class="clear-btn hidden" title="Limpiar">✕</button>
+      </div>
+
+      <div class="header-actions">
+        <a href="#registro-aliados" class="btn-outline">Registra tu negocio</a>
+        <button type="button" class="cart-btn" id="openCartBtn">
+          <span>🛒</span>
+          <span class="cart-badge" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <!-- MÓDULO 2: VERTICALES (SUPER APP GRID) -->
+    <section class="section">
+      <div class="section-header">
+        <h2>¿Qué necesitas hoy?</h2>
+        <button type="button" class="link-btn" id="showAllCategories">Ver todo</button>
+      </div>
+      <div class="verticals-grid" id="verticalsGrid"></div>
+    </section>
+
+    <!-- MÓDULO 3: BANNERS PROMOCIONALES -->
+    <section class="banners-grid">
+      <div class="banner banner-orange" data-filter="Restaurantes">
+        <div class="banner-text">
+          <span class="pill">ENVÍO GRATIS</span>
+          <h3>Tus restaurantes favoritos hasta con 40% OFF</h3>
+          <p>Más de 30 platos listos para pedir ahora mismo.</p>
+          <button type="button" class="btn-white">Pedir ahora</button>
+        </div>
+        <div class="banner-emoji">🍔</div>
+      </div>
+
+      <div class="banner banner-emerald" data-filter="Turbo">
+        <div class="banner-text">
+          <span class="pill">TURBO 10 MIN</span>
+          <h3>Súper, bebidas y antojos en 10 minutos</h3>
+          <p>Entrega ultra rápida directo a tu puerta.</p>
+          <button type="button" class="btn-white">Explorar Turbo</button>
+        </div>
+        <div class="banner-emoji">⚡</div>
+      </div>
+    </section>
+
+    <!-- MÓDULO 4: CATÁLOGO DE TIENDAS Y PRODUCTOS -->
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h2 id="catalogTitle">Destacados cerca de ti</h2>
+          <p class="subtitle" id="catalogSubtitle">Añade productos directo o abre el catálogo completo de cada comercio</p>
+        </div>
+        <span class="counter-pill" id="storeCounter">0 tiendas</span>
+      </div>
+
+      <div class="stores-grid" id="storesGrid"></div>
+
+      <div class="empty-state hidden" id="emptyState">
+        <div class="empty-emoji">🔎</div>
+        <h3>No encontramos coincidencias</h3>
+        <p>Intenta con otra palabra clave o vuelve a ver todas las categorías.</p>
+        <button type="button" class="btn-primary" id="emptyResetBtn">Mostrar todo</button>
+      </div>
+    </section>
+
+    <!-- MÓDULO 6: FORMULARIO DE ONBOARDING DE ALIADOS -->
+    <section class="section ally-section" id="registro-aliados">
+      <div class="ally-card">
+        <div class="ally-info">
+          <span class="pill pill-orange">PARA COMERCIOS</span>
+          <h2>Haz crecer tus ventas con nosotros</h2>
+          <p>Conecta tu restaurante, supermercado o tienda con miles de usuarios activos en tu zona. Activa tu vitrina digital en menos de 48 horas.</p>
+          <ul class="benefits-list">
+            <li>✅ Logística de entrega en tiempo real integrada</li>
+            <li>✅ Panel de control de pedidos y analítica</li>
+            <li>✅ Campañas promocionales dentro de la app</li>
+          </ul>
+        </div>
+
+        <form id="allyForm" class="ally-form" novalidate>
+          <h3>Registra tu comercio</h3>
+
+          <div class="form-group">
+            <label for="businessName">Nombre del comercio *</label>
+            <input type="text" id="businessName" placeholder="Ej. Burger Lab Medellín" required />
+            <small class="error-msg" id="error-businessName"></small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="businessCategory">Categoría *</label>
+              <select id="businessCategory" required>
+                <option value="">Selecciona una...</option>
+                <option value="Restaurantes">Restaurantes</option>
+                <option value="Supermercados">Supermercados</option>
+                <option value="Farmacia">Farmacia</option>
+                <option value="Licores">Licores</option>
+                <option value="Turbo">Turbo 10m</option>
+                <option value="Mascotas">Mascotas</option>
+                <option value="Tecnología">Tecnología</option>
+                <option value="RappiFavor">RappiFavor</option>
+              </select>
+              <small class="error-msg" id="error-businessCategory"></small>
+            </div>
+
+            <div class="form-group">
+              <label for="prepTime">Tiempo promedio (min) *</label>
+              <input type="number" id="prepTime" placeholder="Ej. 25" min="5" max="120" required />
+              <small class="error-msg" id="error-prepTime"></small>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="ownerName">Nombre del contacto *</label>
+              <input type="text" id="ownerName" placeholder="Ej. Camila Restrepo" required />
+              <small class="error-msg" id="error-ownerName"></small>
+            </div>
+
+            <div class="form-group">
+              <label for="ownerPhone">Teléfono / WhatsApp *</label>
+              <input type="tel" id="ownerPhone" placeholder="Ej. 3001234567" required />
+              <small class="error-msg" id="error-ownerPhone"></small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="ownerEmail">Correo electrónico corporativo *</label>
+            <input type="email" id="ownerEmail" placeholder="contacto@tunegocio.com" required />
+            <small class="error-msg" id="error-ownerEmail"></small>
+          </div>
+
+          <div class="form-group">
+            <label for="businessAddress">Dirección del local *</label>
+            <input type="text" id="businessAddress" placeholder="Ej. Calle 10 # 35-20" required />
+            <small class="error-msg" id="error-businessAddress"></small>
+          </div>
+
+          <label class="checkbox-label">
+            <input type="checkbox" id="acceptTerms" required />
+            <span>Acepto los términos de comisión y tratamiento de datos.</span>
+          </label>
+          <small class="error-msg" id="error-acceptTerms"></small>
+
+          <button type="submit" class="btn-primary btn-block">Enviar solicitud de aliado</button>
+
+          <div id="formSuccessBox" class="success-box hidden"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL DE MENÚ COMPLETO DE TIENDA -->
+  <div class="overlay hidden" id="storeModal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <div class="store-modal-title">
+          <span id="modalStoreEmoji" class="modal-emoji">🍔</span>
+          <div>
+            <h3 id="modalStoreName">Nombre de Tienda</h3>
+            <small id="modalStoreMeta" class="subtitle">⏱ 20-30 min • ★ 4.9</small>
+          </div>
+        </div>
+        <button type="button" class="close-btn" id="closeStoreModal">✕</button>
+      </div>
+      <div class="modal-search-bar">
+        <input type="text" id="modalProductFilter" placeholder="Filtrar productos dentro de esta tienda..." />
+      </div>
+      <div class="modal-products-list" id="modalProductsList"></div>
+    </div>
+  </div>
+
+  <!-- MODAL DE DIRECCIÓN -->
+  <div class="overlay hidden" id="locationModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>¿Dónde entregamos tu pedido?</h3>
+        <button type="button" class="close-btn" id="closeLocationModal">✕</button>
+      </div>
+      <form id="locationForm" class="modal-body">
+        <label for="addressInput">Ingresa tu dirección exacta</label>
+        <input type="text" id="addressInput" placeholder="Ej. Av. El Poblado # 12-40, Apto 502" required />
+        <div class="quick-addresses">
+          <button type="button" class="chip" data-addr="Cra 43A # 1-50, El Poblado">📍 El Poblado</button>
+          <button type="button" class="chip" data-addr="Circular 4 # 70-15, Laureles">📍 Laureles</button>
+          <button type="button" class="chip" data-addr="Calle 37 Sur # 43A-20, Envigado">📍 Envigado</button>
+        </div>
+        <button type="submit" class="btn-primary btn-block">Confirmar dirección</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MÓDULO 5: CARRITO LATERAL (DRAWER) -->
+  <div class="overlay hidden" id="cartOverlay">
+    <aside class="cart-drawer">
+      <div class="drawer-header">
+        <h3>Tu canasta</h3>
+        <button type="button" class="close-btn" id="closeCartBtn">✕</button>
+      </div>
+
+      <div class="drawer-body" id="cartItemsContainer"></div>
+
+      <div class="drawer-footer" id="cartFooter">
+        <div class="tip-selector">
+          <span>Propina para el repartidor:</span>
+          <div class="tip-buttons" id="tipButtons">
+            <button type="button" class="tip-btn active" data-tip="0">$0</button>
+            <button type="button" class="tip-btn" data-tip="2000">$2.000</button>
+            <button type="button" class="tip-btn" data-tip="4000">$4.000</button>
+            <button type="button" class="tip-btn" data-tip="6000">$6.000</button>
+          </div>
+        </div>
+
+        <div class="totals">
+          <div class="total-row"><span>Subtotal</span><span id="subtotalAmount">$0</span></div>
+          <div class="total-row"><span>Costo de envío</span><span id="shippingAmount">$3.500</span></div>
+          <div class="total-row"><span>Propina</span><span id="tipAmount">$0</span></div>
+          <div class="total-row grand-total"><span>Total a pagar</span><span id="totalAmount">$0</span></div>
+        </div>
+
+        <button type="button" class="btn-primary btn-block" id="checkoutBtn">Hacer pedido ahora</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- NOTIFICACIÓN TOAST -->
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
